@@ -17,7 +17,6 @@
     var len = itemList.length
     var line = document.createElement('div')
     var firstItem = itemList[0]
-    var lastItem = itemList[len-1]
     var parent = firstItem.parentNode
     var option = {
       height: '3px',
@@ -65,15 +64,11 @@
 
     var getLeftRelativePercentage = function (RelativeDistance) {
       var firstItemLeft = getLeft(firstItem)
-      var lastItemRight = getRight(lastItem)
       var parentLeft = getLeft(parent)
-      var parentRight = getRight(parent)
       var parentWidth = parseFloat(window.getComputedStyle(parent).width)
 
       //兼容x轴方向，父级元素的内部边距，item的外部边距
-      var leftGap = (firstItemLeft - parentLeft) || 0
-      var rightGap = (lastItemRight - parentRight) || 0  
-      var OffsetX = leftGap + rightGap
+      var OffsetX = (firstItemLeft - parentLeft) || 0
       return (RelativeDistance + OffsetX)/ parentWidth * 100 + '%'
     }
 
