@@ -45,7 +45,6 @@
             justify-content: space-between;
             width: 60%;
             position: relative;
-            padding-left: 80px;
         }
 
         .item {
@@ -196,7 +195,10 @@
 
 
         tabTrace('.item', {
-            eventType: 'click'
+            eventType: 'mouseenter',
+            onMouseleave: function (e) {
+                console.log(e)
+            }
         })
 
     </script>

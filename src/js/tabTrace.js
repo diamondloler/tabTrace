@@ -21,11 +21,15 @@
     var option = {
       height: '3px',
       bgColor: 'red',
-      transitionTimeFun: 'ease-in-out',
-      transitionDuration: '.3s',
+      activeItemColor: '#1ABAC8',
+      transitionTimeFun: 'linear',
+      transitionDuration: '.4s',
       eventType: 'click',
       borderRadius: '30%',
-      activeIndex: 0
+      activeIndex: 0,
+      onClick: null,
+      onMouseenter: null,
+      onMouseleave: null
     }
 
     var extend = function (target, source) {
@@ -69,10 +73,10 @@
 
       //兼容x轴方向，父级元素的内部边距，item的外部边距
       var OffsetX = (firstItemLeft - parentLeft) || 0
-      return (RelativeDistance + OffsetX)/ parentWidth * 100 + '%'
+      return (RelativeDistance + OffsetX) / parentWidth * 100 + '%'
     }
 
-  
+
     var move = function (endEL, startEL, line) {
       var end = getLeft(endEL)
       var start = getLeft(startEL)
@@ -95,7 +99,7 @@
         bottom: '0'
       })
       setStyle(targetItem, {
-        color: 'purple'
+        color: option.activeItemColor
       })
 
       move(targetItem, firstItem, targetLine)
@@ -113,14 +117,19 @@
 
 
     var handleTrace = function (e) {
-      var target = e.target
+      var target = e.target  
       move(target, firstItem, line)
+      typeof option.onMouseenter === 'function' 
+      && option.onMouseenter(e)
+
     }
 
 
     var handleLeave = function (e) {
       var target = e.target
       move(itemList[activeIndex], firstItem, line)
+      typeof option.onMouseleave === 'function' 
+      && option.onMouseleave(e)
     }
 
 
@@ -131,10 +140,11 @@
         color: 'purple'
       })
       move(target, firstItem, line)
+      typeof option.onClick === 'function' 
+      && option.onClick(e)
     }
 
     initTrace(line, itemList[activeIndex])
-
 
     while (len--) {
       if (option.eventType == 'click') {
