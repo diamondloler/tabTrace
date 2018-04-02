@@ -119,6 +119,7 @@
 
     var initTrace = function (targetLine, targetItem) {
       parent.appendChild(targetLine)
+
       setStyle(targetLine, {
         position: 'absolute',
         backgroundColor: option.bgColor,
@@ -128,9 +129,11 @@
         boxShadow: option.boxShadow,
         bottom: mode == 'horizontal' ? '0' : ''
       })
+
       setStyle(targetItem, {
         color: option.activeItemColor
       })
+
       move(targetItem, firstItem, targetLine)
     }
 
@@ -155,7 +158,9 @@
     var handleTrace = function (e) {
       var target = e.target
       var currentIndex = checkCurrIndex(target)
+
       move(target, firstItem, line)
+
       typeof option.onMouseenter === 'function' &&
         option.onMouseenter(e, currentIndex)
 
@@ -165,7 +170,9 @@
     var handleLeave = function (e) {
       var target = e.target
       var currentIndex = checkCurrIndex(target)
+
       move(itemList[activeIndex], firstItem, line)
+
       typeof option.onMouseleave === 'function' &&
         option.onMouseleave(e, currentIndex)
     }
@@ -175,11 +182,15 @@
     var handleClick = function (e) {
       var target = e.target
       var currentIndex = checkCurrIndex(target)
+
       resetColor()
+
       setStyle(target, {
         color: option.activeItemColor
       }) 
+
       !isMouseEvent && move(target, firstItem, line) || (activeIndex = currentIndex)
+
       typeof option.onClick === 'function' &&
         option.onClick(e, currentIndex)
     }
@@ -195,8 +206,10 @@
         itemList[len].addEventListener('click', handleClick)
       }
     }
+
+    
   }
 
-
   return tabTrace;
+
 })
