@@ -74,20 +74,20 @@
 
 
     var getWidthRelativePercentage = function (item) {
-      return getComputedWidth(item)
-        / getComputedWidth(parent) * 100 + '%'
+      return getComputedWidth(item) /
+        getComputedWidth(parent) * 100 + '%'
     }
 
     var getHeightRelativePercentage = function (item) {
-      return getComputedHeight(item) 
-        / getComputedHeight(parent) * 100 + '%'
+      return getComputedHeight(item) /
+        getComputedHeight(parent) * 100 + '%'
     }
 
     var getMoveRelativePercentage = function (RelativeDistance, firstItemEdge) {
-      var parentEdge = mode == 'horizontal' ? 
+      var parentEdge = mode == 'horizontal' ?
         getLeft(parent) : getTop(parent)
 
-      var parentWrap = mode == 'horizontal' ? 
+      var parentWrap = mode == 'horizontal' ?
         getComputedWidth(parent) : getComputedHeight(parent)
 
       //兼容x,y轴方向，父级元素的内部边距，item的外部边距
@@ -96,22 +96,22 @@
     }
 
     var move = function (endEL, startEL, line) {
-      var end = mode == 'horizontal' ? 
+      var end = mode == 'horizontal' ?
         getLeft(endEL) : getTop(endEL)
 
-      var start = mode == 'horizontal' ? 
+      var start = mode == 'horizontal' ?
         getLeft(startEL) : getTop(startEL)
 
       var distance = end - start
 
       setStyle(line, {
-        width: mode == 'horizontal' ? 
+        width: mode == 'horizontal' ?
           getWidthRelativePercentage(endEL) : option.width,
-        left: mode == 'horizontal' ? 
+        left: mode == 'horizontal' ?
           getMoveRelativePercentage(distance, start) : 0,
-        height: mode == 'vertical' ? 
+        height: mode == 'vertical' ?
           getHeightRelativePercentage(endEL) : option.height,
-        top: mode == 'vertical' ? 
+        top: mode == 'vertical' ?
           getMoveRelativePercentage(distance, start) : ''
       })
     }
@@ -145,9 +145,9 @@
     }
 
 
-   var checkCurrIndex = function (target) {
-     var index_ = itemList.length
-      while(index_--) 
+    var checkCurrIndex = function (target) {
+      var index_ = itemList.length
+      while (index_--)
         if (itemList[index_] === target) return index_
     }
 
@@ -170,7 +170,7 @@
         option.onMouseleave(e, currentIndex)
     }
 
-    var isMouseEvent = option.eventType == 'click' ?  false : true
+    var isMouseEvent = option.eventType == 'click' ? false : true
 
     var handleClick = function (e) {
       var target = e.target
@@ -178,13 +178,11 @@
       resetColor()
       setStyle(target, {
         color: option.activeItemColor
-      })
-      !isMouseEvent && move(target, firstItem, line)
-      isMouseEvent && (activeIndex = currentIndex)
+      }) 
+      !isMouseEvent && move(target, firstItem, line) || (activeIndex = currentIndex)
       typeof option.onClick === 'function' &&
         option.onClick(e, currentIndex)
     }
-
 
     initTrace(line, itemList[activeIndex])
 
@@ -199,6 +197,6 @@
     }
   }
 
-  
+
   return tabTrace;
 })
