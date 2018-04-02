@@ -55,6 +55,8 @@
             cursor: pointer;
             position: relative;
             transition: all .3s ease-in-out;
+            border-bottom: 1px solid #fff;
+            border-left: 1px solid #fff;
         }
 
         .main {
@@ -194,7 +196,7 @@
 
 
         tabTrace('.item','vertical', {
-            eventType: 'click',
+            eventType: 'mouseenter',
             onMouseleave: function (e) {
                 console.log(e)
             },

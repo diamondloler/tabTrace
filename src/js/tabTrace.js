@@ -74,16 +74,20 @@
 
 
     var getWidthRelativePercentage = function (item) {
-      return getComputedWidth(item) / getComputedWidth(parent) * 100 + '%'
+      return getComputedWidth(item)
+        / getComputedWidth(parent) * 100 + '%'
     }
 
     var getHeightRelativePercentage = function (item) {
-      return getComputedHeight(item) / getComputedHeight(parent) * 100 + '%'
+      return getComputedHeight(item) 
+        / getComputedHeight(parent) * 100 + '%'
     }
 
     var getMoveRelativePercentage = function (RelativeDistance, firstItemEdge) {
-      var parentEdge = mode == 'horizontal' ? getLeft(parent) : getTop(parent)
-      var parentWrap = mode == 'horizontal' ? getComputedWidth(parent) : getComputedHeight(parent)
+      var parentEdge = mode == 'horizontal' ? 
+        getLeft(parent) : getTop(parent)
+      var parentWrap = mode == 'horizontal' ? 
+        getComputedWidth(parent) : getComputedHeight(parent)
 
       //兼容x,y轴方向，父级元素的内部边距，item的外部边距
       var OffsetEdge = (firstItemEdge - parentEdge) || 0
@@ -91,14 +95,20 @@
     }
 
     var move = function (endEL, startEL, line) {
-      var end = mode == 'horizontal' ? getLeft(endEL) : getTop(endEL)
-      var start = mode == 'horizontal' ? getLeft(startEL) : getTop(startEL)
+      var end = mode == 'horizontal' ? 
+        getLeft(endEL) : getTop(endEL)
+      var start = mode == 'horizontal' ? 
+        getLeft(startEL) : getTop(startEL)
       var distance = end - start
       setStyle(line, {
-        width: mode == 'horizontal' ? getWidthRelativePercentage(endEL) : option.width,
-        left: mode == 'horizontal' ? getMoveRelativePercentage(distance, start) : 0,
-        height: mode == 'vertical' ? getHeightRelativePercentage(endEL) : option.height,
-        top: mode == 'vertical' ? getMoveRelativePercentage(distance, start) : ''
+        width: mode == 'horizontal' ? 
+          getWidthRelativePercentage(endEL) : option.width,
+        left: mode == 'horizontal' ? 
+          getMoveRelativePercentage(distance, start) : 0,
+        height: mode == 'vertical' ? 
+          getHeightRelativePercentage(endEL) : option.height,
+        top: mode == 'vertical' ? 
+          getMoveRelativePercentage(distance, start) : ''
       })
     }
 
