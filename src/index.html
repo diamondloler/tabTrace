@@ -35,12 +35,11 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            height: 60px;
         }
 
         .flex-space {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             flex-wrap: wrap;
             justify-content: space-between;
             width: 60%;
@@ -194,13 +193,14 @@
         window.addEventListener('scroll', handleScroll);
 
 
-        tabTrace('.item','horizontal', {
+        tabTrace('.item','vertical', {
             eventType: 'click',
             onMouseleave: function (e) {
                 console.log(e)
             },
             boxShadow: '0 1px 3px 0 rgba(0,0,0,.16), 0 2px 5px 0 rgba(0,0,0,.12)',
-            bgColor: '#1C29C5'
+            bgColor: '#1C29C5',
+            transitionTimeFun: 'cubic-bezier(.4, 0, 0, 1)'
         })
 
     </script>

@@ -11,10 +11,10 @@
 })(typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : this, function (window) {
   var tabTrace = function (selector, mode, option_) {
     if (selector.charCodeAt(0) !== 0x2E) {
-      throw new Error('The 1st parameter must be class name')
+      throw new TypeError('The 1st parameter must be class name')
     }
     if (mode !== 'vertical' && mode !== 'horizontal') {
-      throw new Error('The 2nd parameter must be vertical or horizontal')
+      throw new TypeError('The 2nd parameter must be vertical or horizontal')
     }
     var itemList = document.querySelectorAll(selector)
     var len = itemList.length
@@ -71,16 +71,14 @@
     var getComputedHeight = function (target) {
       return parseFloat(window.getComputedStyle(target).height)
     }
-    
+
 
     var getWidthRelativePercentage = function (item) {
-      var percentage = getComputedWidth(item) / getComputedWidth(parent) * 100 + '%'
-      return percentage
+      return getComputedWidth(item) / getComputedWidth(parent) * 100 + '%'
     }
 
     var getHeightRelativePercentage = function (item) {
-      var percentage = getComputedHeight(item) / getComputedHeight(parent) * 100 + '%'
-      return percentage
+      return getComputedHeight(item) / getComputedHeight(parent) * 100 + '%'
     }
 
     var getMoveRelativePercentage = function (RelativeDistance, firstItemEdge) {
@@ -98,9 +96,9 @@
       var distance = end - start
       setStyle(line, {
         width: mode == 'horizontal' ? getWidthRelativePercentage(endEL) : option.width,
-        left: mode == 'horizontal' ?  getMoveRelativePercentage(distance, start) : 0,
-        height: mode == 'vertical' ?  getHeightRelativePercentage(endEL) : option.height,
-        top: mode == 'vertical' ?  getMoveRelativePercentage(distance, start) : ''
+        left: mode == 'horizontal' ? getMoveRelativePercentage(distance, start) : 0,
+        height: mode == 'vertical' ? getHeightRelativePercentage(endEL) : option.height,
+        top: mode == 'vertical' ? getMoveRelativePercentage(distance, start) : ''
       })
     }
 
@@ -110,8 +108,8 @@
       setStyle(targetLine, {
         position: 'absolute',
         backgroundColor: option.bgColor,
-        transition: 'all ' + option.transitionTimeFun + ' ' 
-        + option.transitionDuration,
+        transition: 'all ' + option.transitionTimeFun + ' ' +
+          option.transitionDuration,
         borderRadius: option.borderRadius,
         boxShadow: option.boxShadow,
         bottom: mode == 'horizontal' ? '0' : ''
@@ -134,10 +132,10 @@
 
 
     var handleTrace = function (e) {
-      var target = e.target  
+      var target = e.target
       move(target, firstItem, line)
-      typeof option.onMouseenter === 'function' 
-      && option.onMouseenter(e)
+      typeof option.onMouseenter === 'function' &&
+        option.onMouseenter(e)
 
     }
 
@@ -145,8 +143,8 @@
     var handleLeave = function (e) {
       var target = e.target
       move(itemList[activeIndex], firstItem, line)
-      typeof option.onMouseleave === 'function' 
-      && option.onMouseleave(e)
+      typeof option.onMouseleave === 'function' &&
+        option.onMouseleave(e)
     }
 
 
@@ -154,11 +152,11 @@
       var target = e.target
       resetColor()
       setStyle(target, {
-        color: 'purple'
+        color: option.activeItemColor
       })
       move(target, firstItem, line)
-      typeof option.onClick === 'function' 
-      && option.onClick(e)
+      typeof option.onClick === 'function' &&
+        option.onClick(e)
     }
 
     initTrace(line, itemList[activeIndex])
