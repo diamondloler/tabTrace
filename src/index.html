@@ -34,8 +34,8 @@
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            height: 60px;
             width: 100%;
+            height: 60px;
         }
 
         .flex-space {
@@ -194,11 +194,13 @@
         window.addEventListener('scroll', handleScroll);
 
 
-        tabTrace('.item', {
-            eventType: 'mouseenter',
+        tabTrace('.item','horizontal', {
+            eventType: 'click',
             onMouseleave: function (e) {
                 console.log(e)
-            }
+            },
+            boxShadow: '0 1px 3px 0 rgba(0,0,0,.16), 0 2px 5px 0 rgba(0,0,0,.12)',
+            bgColor: '#1C29C5'
         })
 
     </script>

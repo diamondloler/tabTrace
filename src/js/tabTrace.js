@@ -9,9 +9,12 @@
     root.tabTrace = factory(root);
   }
 })(typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : this, function (window) {
-  var tabTrace = function (selector, option_) {
+  var tabTrace = function (selector, mode, option_) {
     if (selector.charCodeAt(0) !== 0x2E) {
       throw new Error('The 1st parameter must be class name')
+    }
+    if (mode !== 'vertical' && mode !== 'horizontal') {
+      throw new Error('The 2nd parameter must be vertical or horizontal')
     }
     var itemList = document.querySelectorAll(selector)
     var len = itemList.length
@@ -20,16 +23,18 @@
     var parent = firstItem.parentNode
     var option = {
       height: '3px',
+      width: '3px',
       bgColor: 'red',
       activeItemColor: '#1ABAC8',
-      transitionTimeFun: 'linear',
-      transitionDuration: '.4s',
+      transitionTimeFun: 'ease-in-out',
+      transitionDuration: '.35s',
       eventType: 'click',
-      borderRadius: '30%',
+      borderRadius: '6px',
       activeIndex: 0,
       onClick: null,
       onMouseenter: null,
-      onMouseleave: null
+      onMouseleave: null,
+      boxShadow: ''
     }
 
     var extend = function (target, source) {
@@ -55,31 +60,47 @@
       return target.getBoundingClientRect().left
     }
 
+    var getTop = function (target) {
+      return target.getBoundingClientRect().top
+    }
+
+    var getComputedWidth = function (target) {
+      return parseFloat(window.getComputedStyle(target).width)
+    }
+
+    var getComputedHeight = function (target) {
+      return parseFloat(window.getComputedStyle(target).height)
+    }
+    
+
     var getWidthRelativePercentage = function (item) {
-      var parentWidth = window.getComputedStyle(parent).width
-      var itemWidth = window.getComputedStyle(item).width
-      var percentage = (parseFloat(itemWidth) / parseFloat(parentWidth)) * 100 + '%'
+      var percentage = getComputedWidth(item) / getComputedWidth(parent) * 100 + '%'
       return percentage
     }
 
-    var getLeftRelativePercentage = function (RelativeDistance) {
-      var firstItemLeft = getLeft(firstItem)
-      var parentLeft = getLeft(parent)
-      var parentWidth = parseFloat(window.getComputedStyle(parent).width)
-
-      //兼容x轴方向，父级元素的内部边距，item的外部边距
-      var OffsetX = (firstItemLeft - parentLeft) || 0
-      return (RelativeDistance + OffsetX) / parentWidth * 100 + '%'
+    var getHeightRelativePercentage = function (item) {
+      var percentage = getComputedHeight(item) / getComputedHeight(parent) * 100 + '%'
+      return percentage
     }
 
+    var getMoveRelativePercentage = function (RelativeDistance, firstItemEdge) {
+      var parentEdge = mode == 'horizontal' ? getLeft(parent) : getTop(parent)
+      var parentWrap = mode == 'horizontal' ? getComputedWidth(parent) : getComputedHeight(parent)
+
+      //兼容x,y轴方向，父级元素的内部边距，item的外部边距
+      var OffsetEdge = (firstItemEdge - parentEdge) || 0
+      return (RelativeDistance + OffsetEdge) / parentWrap * 100 + '%'
+    }
 
     var move = function (endEL, startEL, line) {
-      var end = getLeft(endEL)
-      var start = getLeft(startEL)
+      var end = mode == 'horizontal' ? getLeft(endEL) : getTop(endEL)
+      var start = mode == 'horizontal' ? getLeft(startEL) : getTop(startEL)
       var distance = end - start
       setStyle(line, {
-        width: getWidthRelativePercentage(endEL),
-        left: getLeftRelativePercentage(distance)
+        width: mode == 'horizontal' ? getWidthRelativePercentage(endEL) : option.width,
+        left: mode == 'horizontal' ?  getMoveRelativePercentage(distance, start) : 0,
+        height: mode == 'vertical' ?  getHeightRelativePercentage(endEL) : option.height,
+        top: mode == 'vertical' ?  getMoveRelativePercentage(distance, start) : ''
       })
     }
 
@@ -88,16 +109,16 @@
       parent.appendChild(targetLine)
       setStyle(targetLine, {
         position: 'absolute',
-        height: option.height,
         backgroundColor: option.bgColor,
-        transition: 'all ' + option.transitionTimeFun + ' ' + option.transitionDuration,
+        transition: 'all ' + option.transitionTimeFun + ' ' 
+        + option.transitionDuration,
         borderRadius: option.borderRadius,
-        bottom: '0'
+        boxShadow: option.boxShadow,
+        bottom: mode == 'horizontal' ? '0' : ''
       })
       setStyle(targetItem, {
         color: option.activeItemColor
       })
-
       move(targetItem, firstItem, targetLine)
     }
 
