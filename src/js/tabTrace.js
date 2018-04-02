@@ -86,6 +86,7 @@
     var getMoveRelativePercentage = function (RelativeDistance, firstItemEdge) {
       var parentEdge = mode == 'horizontal' ? 
         getLeft(parent) : getTop(parent)
+
       var parentWrap = mode == 'horizontal' ? 
         getComputedWidth(parent) : getComputedHeight(parent)
 
@@ -97,9 +98,12 @@
     var move = function (endEL, startEL, line) {
       var end = mode == 'horizontal' ? 
         getLeft(endEL) : getTop(endEL)
+
       var start = mode == 'horizontal' ? 
         getLeft(startEL) : getTop(startEL)
+
       var distance = end - start
+
       setStyle(line, {
         width: mode == 'horizontal' ? 
           getWidthRelativePercentage(endEL) : option.width,
@@ -141,44 +145,60 @@
     }
 
 
+   var checkCurrIndex = function (target) {
+     var index_ = itemList.length
+      while(index_--) 
+        if (itemList[index_] === target) return index_
+    }
+
+
     var handleTrace = function (e) {
       var target = e.target
+      var currentIndex = checkCurrIndex(target)
       move(target, firstItem, line)
       typeof option.onMouseenter === 'function' &&
-        option.onMouseenter(e)
+        option.onMouseenter(e, currentIndex)
 
     }
 
 
     var handleLeave = function (e) {
       var target = e.target
+      var currentIndex = checkCurrIndex(target)
       move(itemList[activeIndex], firstItem, line)
       typeof option.onMouseleave === 'function' &&
-        option.onMouseleave(e)
+        option.onMouseleave(e, currentIndex)
     }
 
+    var isMouseEvent = option.eventType == 'click' ?  false : true
 
     var handleClick = function (e) {
       var target = e.target
+      var currentIndex = checkCurrIndex(target)
       resetColor()
       setStyle(target, {
         color: option.activeItemColor
       })
-      move(target, firstItem, line)
+      !isMouseEvent && move(target, firstItem, line)
+      isMouseEvent && (activeIndex = currentIndex)
       typeof option.onClick === 'function' &&
-        option.onClick(e)
+        option.onClick(e, currentIndex)
     }
+
 
     initTrace(line, itemList[activeIndex])
 
     while (len--) {
-      if (option.eventType == 'click') {
+      if (!isMouseEvent) {
         itemList[len].addEventListener('click', handleClick)
-      } else if (option.eventType == 'mouseenter') {
+      } else if (isMouseEvent) {
         itemList[len].addEventListener('mouseenter', handleTrace)
         itemList[len].addEventListener('mouseleave', handleLeave)
+        itemList[len].addEventListener('click', handleClick)
       }
     }
   }
+
+  
   return tabTrace;
 })
