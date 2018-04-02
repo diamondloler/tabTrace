@@ -55,10 +55,6 @@
       return target.getBoundingClientRect().left
     }
 
-    var getRight = function (target) {
-      return target.getBoundingClientRect().right
-    }
-
     var getWidthRelativePercentage = function (item) {
       var parentWidth = window.getComputedStyle(parent).width
       var itemWidth = window.getComputedStyle(item).width
