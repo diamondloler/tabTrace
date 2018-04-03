@@ -119,10 +119,10 @@
         left: isHorizontal 
           ? getMoveRelativePercentage(distance, start) 
           : 0,
-        height: !isHorizontal
+        height: mode == 'vertical'
           ? getHeightRelativePercentage(endEL) 
           : option.height,
-        top: !isHorizontal
+        top: mode == 'vertical'
           ? getMoveRelativePercentage(distance, start) 
           : ''
       })
@@ -136,9 +136,9 @@
         position: 'absolute',
         backgroundColor: option.bgColor,
         transition: 'all ' 
-          + option.transitionTimeFun 
-          + ' ' 
-          + option.transitionDuration,
+        + option.transitionTimeFun 
+        + ' ' 
+        + option.transitionDuration,
         borderRadius: option.borderRadius,
         boxShadow: option.boxShadow,
         bottom: isHorizontal 

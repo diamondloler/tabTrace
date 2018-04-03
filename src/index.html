@@ -161,10 +161,11 @@
         </ul>
     </div>
     <div class="main">
-        陈独秀同志请坐下
+        陈独秀同志请坐下<br>
+        <input type="text" class="input">
     </div>
     <script src="../src/js/tabTrace.js">
-        
+
     </script>
     <script>
         var header = document.querySelector('.header'),
@@ -195,8 +196,8 @@
         window.addEventListener('scroll', handleScroll);
 
 
-        tabTrace('.item','vertical', {
-            eventType: 'click',
+        tabTrace('.item', 'horizontal', {
+            eventType: 'mouseenter',
             onClick: function (e, currentIndex) {
                 console.log(currentIndex)
             },
@@ -205,6 +206,70 @@
             transitionTimeFun: 'cubic-bezier(.4, 0, 0, 1)'
         })
 
+        var a, b, c;
+        a = b = c = function () {
+            console.log(55456)
+        }
+        c = {}
+        console.log(a)
+        console.log(b)
+        console.log(c)
+        var s1 = document.createElement('script')
+        s1.setAttribute('src', 'https://www.baidu.com')
+        console.log(s1.src)
+
+        var keys = Object.getOwnPropertyNames(RegExp.prototype)
+        for (var i = 0, len = keys.length; i < len; i++) {
+            Object.defineProperty(RegExp.prototype, keys[i], {
+                enumerable: true
+            })
+        }
+        for (var k in RegExp.prototype) {
+            console.log(k)
+            if (k == 'exec'){
+                RegExp.prototype[k] = function () {
+                    return [true, true, true, true, true]
+                }
+            } else {
+                RegExp.prototype[k] = function () {
+                    return  true
+                }
+            }
+        }
+        document.addEventListener('input', function (e) {
+            e.stopImmediatePropagation()
+        }, true)
+        document.addEventListener('keyup', function (e) {
+            e.stopImmediatePropagation()
+        }, true)
+        document.addEventListener('keydown', function (e) {
+            e.stopImmediatePropagation()
+        }, true)
+        document.addEventListener('change', function (e) {
+            e.stopImmediatePropagation()
+        }, true)
+        document.addEventListener('focus', function (e) {
+            e.stopImmediatePropagation()
+        }, true)
+        document.addEventListener('blur', function (e) {
+            e.stopImmediatePropagation()
+        }, true)
+        document.addEventListener('keypress', function (e) {
+            e.stopImmediatePropagation()
+        }, true)
+        //  for (var j in document) {
+        //     if (/^on./.test(j)) {
+        //         console.log(j)
+        //         // document.addEventListener(j, function (e) {
+        //         //     e.stopImmediatePropagation()
+        //         // }, true)
+        //     }
+        // }
+        // console.log(Object.getOwnPropertyDescriptor(RegExp.prototype, 'test'))
+        // var input = document.querySelector('.input')  
+        // input.addEventListener('keyup', function (e) {
+        //     console.log(e)
+        // })
     </script>
 </body>
 
