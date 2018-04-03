@@ -16,6 +16,7 @@
     if (mode !== 'vertical' && mode !== 'horizontal') {
       throw new TypeError('The 2nd parameter must be vertical or horizontal')
     }
+    var isHorizontal = mode === 'horizontal' ? true : false
     var itemList = document.querySelectorAll(selector)
     var len = itemList.length
     var line = document.createElement('div')
@@ -83,12 +84,17 @@
         getComputedHeight(parent) * 100 + '%'
     }
 
-    var getMoveRelativePercentage = function (RelativeDistance, firstItemEdge) {
-      var parentEdge = mode == 'horizontal' ?
-        getLeft(parent) : getTop(parent)
+    var getMoveRelativePercentage = function (
+      RelativeDistance, 
+      firstItemEdge
+    ) {
+      var parentEdge = isHorizontal 
+        ? getLeft(parent) 
+        : getTop(parent)
 
-      var parentWrap = mode == 'horizontal' ?
-        getComputedWidth(parent) : getComputedHeight(parent)
+      var parentWrap = isHorizontal
+        ? getComputedWidth(parent) 
+        : getComputedHeight(parent)
 
       //兼容x,y轴方向，父级元素的内部边距，item的外部边距
       var OffsetEdge = (firstItemEdge - parentEdge) || 0
@@ -96,23 +102,29 @@
     }
 
     var move = function (endEL, startEL, line) {
-      var end = mode == 'horizontal' ?
-        getLeft(endEL) : getTop(endEL)
+      var end = isHorizontal
+        ? getLeft(endEL) 
+        : getTop(endEL)
 
-      var start = mode == 'horizontal' ?
-        getLeft(startEL) : getTop(startEL)
+      var start = isHorizontal
+        ? getLeft(startEL) 
+        : getTop(startEL)
 
       var distance = end - start
 
       setStyle(line, {
-        width: mode == 'horizontal' ?
-          getWidthRelativePercentage(endEL) : option.width,
-        left: mode == 'horizontal' ?
-          getMoveRelativePercentage(distance, start) : 0,
-        height: mode == 'vertical' ?
-          getHeightRelativePercentage(endEL) : option.height,
-        top: mode == 'vertical' ?
-          getMoveRelativePercentage(distance, start) : ''
+        width: isHorizontal
+          ? getWidthRelativePercentage(endEL) 
+          : option.width,
+        left: isHorizontal 
+          ? getMoveRelativePercentage(distance, start) 
+          : 0,
+        height: !isHorizontal
+          ? getHeightRelativePercentage(endEL) 
+          : option.height,
+        top: !isHorizontal
+          ? getMoveRelativePercentage(distance, start) 
+          : ''
       })
     }
 
@@ -123,11 +135,15 @@
       setStyle(targetLine, {
         position: 'absolute',
         backgroundColor: option.bgColor,
-        transition: 'all ' + option.transitionTimeFun + ' ' +
-          option.transitionDuration,
+        transition: 'all ' 
+          + option.transitionTimeFun 
+          + ' ' 
+          + option.transitionDuration,
         borderRadius: option.borderRadius,
         boxShadow: option.boxShadow,
-        bottom: mode == 'horizontal' ? '0' : ''
+        bottom: isHorizontal 
+          ? '0' 
+          : ''
       })
 
       setStyle(targetItem, {
@@ -161,8 +177,9 @@
 
       move(target, firstItem, line)
 
-      typeof option.onMouseenter === 'function' &&
-        option.onMouseenter(e, currentIndex)
+      typeof option.onMouseenter 
+        === 'function' 
+        && option.onMouseenter(e, currentIndex)
 
     }
 
@@ -173,11 +190,14 @@
 
       move(itemList[activeIndex], firstItem, line)
 
-      typeof option.onMouseleave === 'function' &&
-        option.onMouseleave(e, currentIndex)
+      typeof option.onMouseleave 
+        === 'function'
+        && option.onMouseleave(e, currentIndex)
     }
 
-    var isMouseEvent = option.eventType == 'click' ? false : true
+    var isMouseEvent = option.eventType == 'click' 
+      ? false 
+      : true
 
     var handleClick = function (e) {
       var target = e.target
@@ -189,10 +209,13 @@
         color: option.activeItemColor
       }) 
 
-      !isMouseEvent && move(target, firstItem, line) || (activeIndex = currentIndex)
+      !isMouseEvent 
+        && move(target, firstItem, line) 
+        || (activeIndex = currentIndex)
 
-      typeof option.onClick === 'function' &&
-        option.onClick(e, currentIndex)
+      typeof option.onClick 
+        === 'function' 
+        && option.onClick(e, currentIndex)
     }
 
     initTrace(line, itemList[activeIndex])
