@@ -37,7 +37,8 @@
       onMouseleave: null,
       boxShadow: ''
     }
-
+    var itemClass = selector.replace(/(^.)/g, '')
+   
     var extend = function (target, source) {
       source = source || {}
       for (var key in source) {
@@ -173,6 +174,11 @@
 
     var handleTrace = function (e) {
       var target = e.target
+
+       while(target.className.indexOf(itemClass) == -1) {
+        target = target.parent
+      }
+
       var currentIndex = checkCurrIndex(target)
 
       move(target, firstItem, line)
@@ -186,6 +192,11 @@
 
     var handleLeave = function (e) {
       var target = e.target
+
+      while(target.className.indexOf(itemClass) == -1) {
+        target = target.parent
+      }
+      
       var currentIndex = checkCurrIndex(target)
 
       move(itemList[activeIndex], firstItem, line)
@@ -201,6 +212,12 @@
 
     var handleClick = function (e) {
       var target = e.target
+      
+      //递归到item为止
+       while(target.className.indexOf(itemClass) == -1) {
+        target = target.parentNode
+      }
+
       var currentIndex = checkCurrIndex(target)
 
       resetColor()
